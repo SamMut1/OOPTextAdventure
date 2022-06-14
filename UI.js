@@ -79,4 +79,53 @@ function handleHelp()
     ui.printIn("grab item       - Pick up specified item from the room");
     ui.printIn("drop item       - Drop specified item");
     ui.printIn("check items     - Shows the contents of the bag");
+
+    ui.printIn("");
 }
+
+function handleGo(ar)
+{
+    if (ar.length === 0)
+    {
+        ui.printIn("Specify the direction you want to go!");
+        return;
+    }
+
+    globalThis(capitalize(ar[0]));
+}
+
+function handleLook()
+{
+    printRoom(room);
+}
+
+function handleGrab(ar)
+{
+    if (ar.length === 0)
+    {
+        ui.printIn("Specify the item to grab!");
+        return;
+    }
+
+    var what = ar.join(" ");
+
+    var p = room.Objects ? room.Objects.indexOf(what) : -1;
+    if (p < 0)
+    {
+        ui.printIn("Cant't find '" + what +"'");
+        return;
+    }
+
+    if(bag.length >= bagSize)
+    {
+        ui.printIn("I can't carry anymore. Cant grab '" + what +"'")
+        return;
+    }
+
+    var item = room.items[p];
+    bag.push(item);
+    room.Objects.splice(p, 1);
+
+    ui.printIn("You grabbed '" + item + "'"); 
+}
+
